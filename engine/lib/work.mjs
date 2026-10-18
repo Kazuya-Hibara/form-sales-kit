@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { jstNow, jstDate, normalizeDomain } from './util.mjs';
 
-export const DEFAULT_CONFIG = { daily_cap: 20, min_gap_sec: 30, headless: true };
+export const DEFAULT_CONFIG = { daily_cap: 10, min_gap_sec: 30, headless: true };
 
 // Statuses that mean "this company has (probably) received our message".
 // confirm_unclear counts: the click may have gone through, and 1 社 1 回 errs on the safe side.
