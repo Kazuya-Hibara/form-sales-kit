@@ -24,7 +24,7 @@ git clone https://github.com/Kazuya-Hibara/form-sales-kit.git ~/form-sales-kit
 - `engine/` — フォームへの入力・送信・記録を行う小さなプログラム (Node.js + Playwright)
 - `examples/` — ヒアリングの雛形と記入例
 
-送り先の一覧・文面・送信の記録は、すべて利用者のパソコンの `~/form-sales-kit/work/` に保存され、作者に送られることはありません。送るかどうか・何を書くかの最終判断と責任は利用者にあります。
+送り先の一覧・文面・送信の記録は、すべて利用者のパソコンの `~/form-sales-kit/work/` に保存され、作者に送られることはありません。送るかどうか・何を書くかの最終判断と責任は利用者にあります。所属団体の規程 (広告・勧誘のルールなど) がある方は、それに沿ってお使いください。
 
 License: MIT
 
