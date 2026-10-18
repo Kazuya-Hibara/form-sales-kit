@@ -1,0 +1,26 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>お問い合わせ - CF7</title></head><body>
+<div class="wpcf7" id="wpcf7-f1-o1"><form action="/cf7/#wpcf7-f1-o1" method="post" class="wpcf7-form init" novalidate>
+<p><label> お名前 (必須)<br><span class="wpcf7-form-control-wrap" data-name="your-name"><input type="text" name="your-name" class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required" aria-required="true"></span></label></p>
+<p><label> 会社名<br><span class="wpcf7-form-control-wrap" data-name="your-company"><input type="text" name="your-company" class="wpcf7-form-control wpcf7-text"></span></label></p>
+<p><label> メールアドレス (必須)<br><span class="wpcf7-form-control-wrap" data-name="your-email"><input type="email" name="your-email" class="wpcf7-form-control wpcf7-email wpcf7-validates-as-required" aria-required="true"></span></label></p>
+<p><label> 題名<br><span class="wpcf7-form-control-wrap" data-name="your-subject"><input type="text" name="your-subject" class="wpcf7-form-control wpcf7-text"></span></label></p>
+<p><label> メッセージ本文<br><span class="wpcf7-form-control-wrap" data-name="your-message"><textarea name="your-message" class="wpcf7-form-control wpcf7-textarea"></textarea></span></label></p>
+<p><span class="wpcf7-form-control-wrap" data-name="acceptance-1"><span class="wpcf7-form-control wpcf7-acceptance"><span class="wpcf7-list-item"><label><input type="checkbox" name="acceptance-1" value="1" aria-invalid="false"><span class="wpcf7-list-item-label">プライバシーポリシーに同意します</span></label></span></span></span></p>
+<p><input type="submit" value="送信" class="wpcf7-form-control wpcf7-submit"></p>
+<textarea name="_wpcf7_ak_hp_textarea" style="display:none"></textarea>
+<div class="wpcf7-response-output" aria-hidden="true"></div>
+</form></div>
+<script>
+const form = document.querySelector('form.wpcf7-form');
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  form.classList.replace('init', 'submitting');
+  const res = await fetch('/cf7/feedback', { method: 'POST', body: new URLSearchParams(new FormData(form)) });
+  const j = await res.json();
+  await new Promise(r => setTimeout(r, 600));
+  form.classList.remove('submitting');
+  form.classList.add(j.status === 'mail_sent' ? 'sent' : 'invalid');
+  if (j.status === 'mail_sent') form.reset();
+  form.querySelector('.wpcf7-response-output').textContent = j.message;
+});
+</script></body></html>

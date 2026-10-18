@@ -1,0 +1,15 @@
+{
+  "name": "form-sales-kit-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "フォーム営業キットの送信エンジン (Node + Playwright)。AI エージェントがシェルから動かす。",
+  "type": "module",
+  "bin": { "fsk": "bin/kit.mjs" },
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.64.1"
+  }
+}

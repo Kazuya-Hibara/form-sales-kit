@@ -1,0 +1,23 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>お問い合わせ</title><style>.fake::before{content:"☐ ";} input#agree{display:none}</style></head><body>
+<h1>お問い合わせ</h1>
+<form action="/split/post" method="post">
+<table>
+<tr><th>会社名</th><td><input type="text" name="company"></td></tr>
+<tr><th>会社名（ふりがな）</th><td><input type="text" name="company_kana" placeholder="かぶしきがいしゃ"></td></tr>
+<tr><th>お名前<span>必須</span></th><td><span>姓</span><input type="text" name="name1" placeholder="山田" required> <span>名</span><input type="text" name="name2" placeholder="太郎" required></td></tr>
+<tr><th>フリガナ（全角カタカナ）<span>必須</span></th><td><input type="text" name="kana_sei" placeholder="ヤマダ" required> <input type="text" name="kana_mei" placeholder="タロウ" required></td></tr>
+<tr><th>電話番号<span>必須</span></th><td><input type="tel" name="tel1" maxlength="4" required>-<input type="tel" name="tel2" maxlength="4" required>-<input type="tel" name="tel3" maxlength="4" required></td></tr>
+<tr><th>郵便番号</th><td>〒<input type="text" name="zip1" maxlength="3">-<input type="text" name="zip2" maxlength="4"></td></tr>
+<tr><th>都道府県</th><td><select name="pref"><option value="">選択してください</option><option>北海道</option><option>青森県</option><option>宮城県</option><option>茨城県</option><option>埼玉県</option><option>千葉県</option><option>東京都</option><option>神奈川県</option><option>愛知県</option><option>京都府</option><option>大阪府</option><option>福岡県</option><option>沖縄県</option></select></td></tr>
+<tr><th>ご住所</th><td><input type="text" name="addr"></td></tr>
+<tr><th>メールアドレス<span>必須</span></th><td><input type="email" name="email" required></td></tr>
+<tr><th>メールアドレス（確認用）<span>必須</span></th><td><input type="email" name="email_confirm" required></td></tr>
+<tr><th>お問い合わせ種別<span>必須</span></th><td><label><input type="radio" name="type" value="product" required> 製品について</label> <label><input type="radio" name="type" value="press"> 取材のご依頼</label> <label><input type="radio" name="type" value="other"> その他</label></td></tr>
+<tr><th>ご希望の連絡方法</th><td><label><input type="radio" name="contact_way" value="tel"> 電話</label> <label><input type="radio" name="contact_way" value="mail"> メール</label></td></tr>
+<tr><th>お問い合わせ内容<span>必須</span></th><td><textarea name="message" required></textarea></td></tr>
+</table>
+<input type="text" name="website_hp" style="display:none">
+<p><label><input type="checkbox" name="news" value="1"> メールマガジンを受け取る</label></p>
+<p><input type="checkbox" id="agree" name="agree" value="1" required><label for="agree" class="fake">プライバシーポリシーに同意する</label></p>
+<p><button type="submit">送　信</button></p>
+</form></body></html>

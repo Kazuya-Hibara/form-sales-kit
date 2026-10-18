@@ -1,0 +1,17 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>お問い合わせ | テスト株式会社</title></head><body>
+<header><form action="/search" method="get"><input type="text" name="s" placeholder="サイト内検索"><button type="submit">検索</button></form></header>
+<h1>お問い合わせ</h1>
+<form action="/simple/post" method="post">
+<table>
+<tr><th>会社名</th><td><input type="text" name="company"></td></tr>
+<tr><th>お名前 <span>必須</span></th><td><input type="text" name="your_name" required></td></tr>
+<tr><th>メールアドレス <span>必須</span></th><td><input type="email" name="mail" required></td></tr>
+<tr><th>電話番号</th><td><input type="tel" name="tel"></td></tr>
+<tr><th>お問い合わせ種別</th><td><select name="kind"><option value="">選択してください</option><option>サービスについて</option><option>採用について</option><option>その他</option></select></td></tr>
+<tr><th>お問い合わせ内容 <span>必須</span></th><td><textarea name="body" required></textarea></td></tr>
+</table>
+<p><label><input type="checkbox" name="privacy" value="1" required> 個人情報の取り扱いに同意する</label></p>
+<p><input type="submit" value="送信"></p>
+</form>
+<footer>営業時間 9:00-18:00 土日祝休み / 当サイトの無断転載を禁止します</footer>
+</body></html>
