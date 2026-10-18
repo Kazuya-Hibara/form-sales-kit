@@ -26,6 +26,8 @@ export function preSubmitGuard({ domain, targetEmail = '' }, { ledger, suppress,
   if (prior) {
     return { guard: 'already_sent', detail: `${prior.domain} は ${prior.ts} に ${prior.status} 済み (1 社 1 回)` };
   }
+  const win = sendWindowGuard(config, now);
+  if (win) return win;
   const today = jstDate(now);
   const sentToday = ledger.filter(r => SENT_STATUSES.includes(r.status)
                                        && String(r.ts || '').startsWith(today)).length;
@@ -43,4 +45,19 @@ export function gapRemainingSec(ledger, config, now = new Date()) {
   const last = Math.max(...clicks);
   const left = Number(config.min_gap_sec) * 1000 - (now.getTime() - last);
   return left > 0 ? Math.ceil(left / 1000) : 0;
+}
+
+const WEEKDAY_JA = ['日', '月', '火', '水', '木', '金', '土'];
+
+/** Refuse outside the configured JST send window (days 0=Sun..6=Sat, hours [from, to)). */
+export function sendWindowGuard(config, now = new Date()) {
+  const days = Array.isArray(config.send_days) ? config.send_days.map(Number) : [1, 2, 3, 4, 5];
+  const [from, to] = Array.isArray(config.send_hours) ? config.send_hours.map(Number) : [9, 17];
+  const jst = new Date(now.getTime() + 9 * 3600 * 1000);
+  const day = jst.getUTCDay();
+  const hour = jst.getUTCHours();
+  if (days.includes(day) && hour >= from && hour < to) return null;
+  const allowed = days.map(d => WEEKDAY_JA[d]).join('・');
+  return { guard: 'outside_send_window',
+           detail: `送信できる時間帯 (${allowed} ${from}-${to} 時) の外です (今は ${WEEKDAY_JA[day]} ${hour} 時台)` };
 }

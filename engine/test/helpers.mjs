@@ -83,7 +83,7 @@ export function startServer() {
 
 export function newWork(config = { min_gap_sec: 0 }) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fsk-test-'));
-  fs.writeFileSync(path.join(dir, 'config.json'), JSON.stringify({ daily_cap: 20, headless: true, ...config }));
+  fs.writeFileSync(path.join(dir, 'config.json'), JSON.stringify({ daily_cap: 20, headless: true, send_days: [0, 1, 2, 3, 4, 5, 6], send_hours: [0, 24], ...config }));
   return dir;
 }
 

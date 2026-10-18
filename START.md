@@ -14,11 +14,11 @@
 すでに `~/form-sales-kit/SKILL.md` と `~/form-sales-kit/engine/node_modules` があれば、手順 1〜4 は飛ばして 5 へ。
 
 1. **キットを取得**: `https://www.automateaugment.com/kits/form-sales-kit/form-sales-kit.zip` をダウンロードし、ホームフォルダに展開します (`~/form-sales-kit/` ができます。既存の `~/form-sales-kit/work/` は上書きしません)。
-   - macOS / Linux: `curl -fsSL <zipのURL> -o "$TMPDIR/fsk.zip" && unzip -oq "$TMPDIR/fsk.zip" -d ~`
+   - macOS / Linux: `curl -fsSL <zipのURL> -o "${TMPDIR:-/tmp}/fsk.zip" && unzip -oq "${TMPDIR:-/tmp}/fsk.zip" -d ~`
    - Windows (PowerShell): `Invoke-WebRequest <zipのURL> -OutFile $env:TEMP\fsk.zip; Expand-Archive -Force $env:TEMP\fsk.zip $HOME`
    - Codex で通信が sandbox に止められたら、通信を許可するよう利用者の承認を求めてください (この準備と送信には外部への通信が必要です)。
 2. **Node.js を確認**: `node -v` が 18 以上なら OK。無ければ、その OS の標準の方法で LTS 版を入れます (macOS: Homebrew があれば `brew install node`、無ければ https://nodejs.org の pkg / Windows: `winget install OpenJS.NodeJS.LTS`)。管理者パスワードの入力が必要なら、利用者にその旨だけ伝えて入力してもらいます。
-3. **エンジンを準備**: `cd ~/form-sales-kit/engine && npm install --no-audit --no-fund && npx playwright install chromium` (ブラウザ部品の取得に 1〜2 分かかります)。
+3. **エンジンを準備**: `cd ~/form-sales-kit/engine && npm install --no-audit --no-fund && npx playwright install chromium` (ブラウザ部品の取得に 1〜2 分かかります)。Windows PowerShell 5.1 では `&&` が使えないので、`;` でつなぐか 1 つずつ実行します。
 4. **スキルとして登録** (次回から 1 行貼らなくても「フォーム営業」で呼べるように):
    - Claude Code: `~/.claude/skills/form-sales-kit` を `~/form-sales-kit` へのシンボリックリンクにする (Windows はフォルダごとコピー)。
    - Codex: `~/.agents/skills/form-sales-kit` を同様に作る。

@@ -6,7 +6,7 @@ AI エージェント (Claude Code / Codex) が利用者の PC のシェルか�
 - セットアップ: `engine/` で `npm install` → `npx playwright install chromium` → `node bin/kit.mjs doctor`
 - 出力: どのコマンドも stdout に JSON を 1 つだけ出します。進み具合のログは stderr に出ます。終了コードは `ok:false` のとき 1、それ以外は 0 です。
 - 作業データ: `~/form-sales-kit/work/` (環境変数 `FSK_WORK` で変更可)
-  - `config.json` `{ "daily_cap": 20, "min_gap_sec": 30, "headless": true }`
+  - `config.json` `{ "daily_cap": 10, "min_gap_sec": 30, "headless": true, "send_days": [1,2,3,4,5], "send_hours": [9,17] }` (send_days は 0=日〜6=土、send_hours は JST の [開始, 終了) 時)
   - `ledger.jsonl` 送信台帳 (1 行 1 件。ts は JST の ISO 形式)
   - `suppress.txt` 停止リスト (1 行に 1 件、ドメインかメールアドレス)
   - `shots/` スクリーンショット
@@ -47,6 +47,7 @@ AI エージェント (Claude Code / Codex) が利用者の PC のシェルか�
 
 - 1 社 1 回: 同じドメイン (サブドメインを含む) が台帳で `submitted` / `confirm_unclear` / `sent_manual` になっていれば送りません (`already_sent`)。
 - 停止リスト: suppress.txt にあるドメイン、またはメールアドレスのドメインに一致したら送りません (`suppressed`)。
+- 送信の時間帯: JST で `send_days` の曜日・`send_hours` の時間帯の外なら送りません (`outside_send_window`)。
 - 日次上限: 今日 (JST) の送信済み件数が `daily_cap` 以上なら送りません (`daily_cap`)。
 - 送信の間隔: 前回ボタンを押してから `min_gap_sec` 秒たつまで待ってから押します。`--no-wait` を付けた場合は待たずに `blocked_by_guard` / `min_gap` と `wait_sec` を返します。
 - captcha がある、または営業お断りの記載がある場合は送りません。

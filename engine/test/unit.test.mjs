@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { sendWindowGuard } from '../lib/guards.mjs';
 import {
   assignRoles, buildFields, detectSalesRefusal, kanaFor, nameSide, pickOption, splitPhone, toHalfKana, toKatakana,
 } from '../lib/heuristics.mjs';
@@ -87,7 +88,7 @@ test('inquiry type: その他 preferred, explicit value wins, required fallback 
 
 test('guards: already sent, suppress (domain / email / subdomain), daily cap', () => {
   const now = new Date();
-  const config = { daily_cap: 2, min_gap_sec: 30 };
+  const config = { daily_cap: 2, min_gap_sec: 30, send_days: [0, 1, 2, 3, 4, 5, 6], send_hours: [0, 24] };
   const ledger = [{ ts: jstNow(now), domain: 'a.test', status: 'submitted' }];
   assert.equal(preSubmitGuard({ domain: 'www.a.test' }, { ledger, suppress: [], config }).guard, 'already_sent');
   assert.equal(preSubmitGuard({ domain: 'b.test' }, { ledger, suppress: ['b.test'], config }).guard, 'suppressed');
@@ -111,4 +112,14 @@ test('domain normalisation', () => {
   assert.equal(normalizeDomain('https://www.Example.co.jp/contact/'), 'example.co.jp');
   assert.equal(normalizeDomain('info@example.co.jp'), 'example.co.jp');
   assert.match(jstNow(new Date('2026-10-18T15:30:00Z')), /^2026-10-19T00:30:00\+09:00$/);
+});
+
+test('send window: JST weekday and hours, defaults Mon-Fri 9-17', () => {
+  const at = iso => new Date(iso);
+  assert.equal(sendWindowGuard({}, at('2026-10-19T01:00:00Z')), null); // Mon 10:00 JST
+  assert.equal(sendWindowGuard({}, at('2026-10-19T08:00:00Z')).guard, 'outside_send_window'); // Mon 17:00 JST
+  assert.equal(sendWindowGuard({}, at('2026-10-18T01:00:00Z')).guard, 'outside_send_window'); // Sun 10:00 JST
+  assert.equal(sendWindowGuard({ send_days: [0], send_hours: [9, 12] }, at('2026-10-18T01:00:00Z')), null);
+  // must not pass through the plain daily cap path when outside the window
+  assert.equal(preSubmitGuard({ domain: 'w.test' }, { ledger: [], suppress: [], config: { daily_cap: 5 }, now: at('2026-10-18T12:00:00Z') }).guard, 'outside_send_window');
 });
