@@ -82,13 +82,14 @@ L モードでは一覧を作業フォルダの `targets.csv` に保存します
 2. 一社ずつ次を繰り返します。
    - `kit inspect <フォームURL>` で欄を読みます。
    - profile と文面から `values.json` を作ります (役割→値。会社名・氏名・ふりがな・メール・電話・本文など)。自動の割り当てが外れている欄だけ、`map.json` で欄ごとに指定します。
-   - `kit fill <フォームURL> --values values.json [--map map.json]` で送信せずに入力を確かめます。必須なのに空いている欄があれば埋め直します。
-   - `kit fill <フォームURL> --values values.json [--map map.json] --submit` で送信します。結果 (`status`) を読みます。
+   - `kit fill <フォームURL> --values values.json [--map map.json] --site <その会社のホームページ> --company <社名>` で送信せずに入力を確かめます (`status: dry_run`)。`unfilled_required` や `invalid` があれば埋め直します。`--site` は、フォームが外部サービス (form.run・Google フォームなど) にある時に必須で、いつも付けておけば間違いません。
+   - 同じコマンドに `--submit` を付けて送信します。結果 (`status`) を読みます。
      - `submitted`: 送信完了。次へ。
      - `validation_error`: 表示された理由を読み、1 回だけ直して再送します。直らなければ飛ばします。
-     - `confirm_unclear`: 送れたか分からない。**再送しません。** 記録して次へ。
+     - `confirm_unclear`: 送れたか分からない。**再送しません** (エンジンも送信済みとして数えます)。送信後の画面 (`shots/`) を見て、まとめで利用者に確認を頼みます。
+     - `error`: サイト側の不具合など。飛ばして次へ。
      - `captcha` / `sales_refusal` / `blocked_by_guard`: 送りません。次へ。
-   - 結果はエンジンが `ledger.jsonl` に残します。`targets.csv` の `status` も更新します。
+   - 結果はエンジンが `ledger.jsonl` に自動で残します。送らずに見送った会社は `kit ledger add --company <社名> --url <URL> --status skipped --note <理由>` で記録します。送信の間隔はエンジンが待つので、急がせません。`targets.csv` の `status` も更新します。
 3. 5 件ごとに、短く報告します: 「12/20 件 送信 (飛ばした 1 件: 確認画面が不明)」。
 4. 決めた件数に達したら、まとめを出します: 送った会社、飛ばした会社と理由、送信完了の画面の保存場所 (`work/shots/`)。
 
